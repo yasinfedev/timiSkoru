@@ -1,0 +1,168 @@
+<!doctype html>
+
+<html>
+  <head>
+    <link rel="stylesheet" href="lib/style.css">
+    <script src="lib/script.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <h1>Hello Plunker!</h1>
+    <div class="jumbotron bg-primary text-center" style="font-weight:bold; font-size:24px; color:white">TIMI Skoru Hesaplayıcı</div>
+    <div class="col-md-12">
+      <div class="alert alert-info" role="alert">
+  TIMI Skoru, orjinalinde USAP/NSTEMİ düşünülen gruplar için türetilmiş olup, iskemik göğüs ağrısı tarifleyen hastalar için MI, revaskülarizasyon veya ölüm açısından risk sınıflaması yapmaya yarayan skorlama sistemidir.
+</div>
+        <div class="card">
+          <div class="card-header bg-warning" style="font-weight:bold">TIMI Skoru Hesaplayıcı</div>
+          <div class="card-body alert alert-warning" style="color:black;">
+          
+            <div class="form-check form-group">
+              <input class="form-check-input" type="checkbox" value="" id="yasSecenek">
+              <label class="form-check-label" for="yasSecenek">
+                Yaş > 65 (1 puan)
+              </label>
+             
+            </div>
+             <div class="form-check form-group">
+              <input class="form-check-input" type="checkbox" value="" id="kahSecenek">
+              <label class="form-check-label" for="kahSecenek">
+                KAH için > 3 risk faktörü (1 puan)
+              </label> <small>(HT, HL, DM, sigara ve ailede KAH öyküsü)</small>
+            </div>
+             <div class="form-check form-group">
+              <input class="form-check-input" type="checkbox" value="" id="anginaSecenek">
+              <label class="form-check-label" for="anginaSecenek">
+                Son 24 saatte ≥ 2 anginal atak (1 puan)
+              </label>
+            </div>
+             <div class="form-check form-group">
+              <input class="form-check-input" type="checkbox" value="" id="darlikSecenek">
+              <label class="form-check-label" for="darlikSecenek">
+                Bilinen ≥ %50 koroner darlık (1 puan)
+              </label>
+            </div>
+             <div class="form-check form-group">
+              <input class="form-check-input" type="checkbox" value="" id="asaSecenek">
+              <label class="form-check-label" for="asaSecenek">
+                Son 7 gün içerisinde ASA alımı (1 puan)
+              </label>
+            </div>
+             <div class="form-check form-group">
+              <input class="form-check-input" type="checkbox" value="" id="stSecenek">
+              <label class="form-check-label" for="stSecenek">
+                Yeni gelişen ST değişikliği (1 puan)
+              </label><small> (İlk başvuru EKG'sinde ≥0.5mm ST segment deviasyonu)</small>
+            </div>
+             <div class="form-check form-group">
+              <input class="form-check-input" type="checkbox" value="" id="tropSecenek">
+              <label class="form-check-label" for="tropSecenek">
+                Troponin yüksekliği (1 puan)
+              </label>
+            </div>
+            <hr>
+            
+  <button class="btn btn-primary" type="button" onclick="skorHesapla()">HESAPLA</button>
+
+
+  <button class="btn btn-secondary" type="button" onclick="temizle()">TEMİZLE</button>
+
+            <div>
+
+            </div>
+            <hr>
+
+            <b>SKOR:</b>
+
+           <div class="alert alert-success" role="alert" id="dusukSkor" style="display:none">
+  
+</div>
+<div class="alert alert-warning" role="alert" id="ortaSkor" style="display:none">
+  
+</div>
+<div class="alert alert-danger" role="alert" id="yuksekSkor" style="display:none">
+
+  
+  
+</div><hr>
+
+<div class="alert alert-info" role="alert">
+  <b>0-2 puan:</b> 2 hafta içinde ölüm/Mİ riski = <b>%3</b><br>
+  <b>3 puan:</b> 2 hafta içinde ölüm/Mİ riski = <b>%5</b><br>
+  <b>4 puan:</b> 2 hafta içinde ölüm/Mİ riski = <b>%7</b><br>
+  <b>5 puan:</b> 2 hafta içinde ölüm/Mİ riski = <b>%12</b><br>
+  <b>6-7 puan:</b> 2 hafta içinde ölüm/Mİ riski =<b> %19</b><br>
+
+
+</div>
+            
+
+            
+          </div>
+        </div>
+    </div>
+
+    <script>
+  function skorHesapla() {
+    var skor = 0;
+
+    if (document.getElementById("yasSecenek").checked) {
+      skor += 1;
+    } 
+    if (document.getElementById("kahSecenek").checked) {
+      skor += 1;
+    } 
+    if (document.getElementById("anginaSecenek").checked) {
+      skor += 1;
+    } 
+    if (document.getElementById("darlikSecenek").checked) {
+      skor += 1;
+    } 
+    if (document.getElementById("asaSecenek").checked) {
+      skor += 1;
+    } 
+    if (document.getElementById("stSecenek").checked) {
+      skor += 1;
+    } 
+    if (document.getElementById("tropSecenek").checked) {
+      skor += 1;
+    }
+
+    if (skor < 3) {
+      document.getElementById("dusukSkor").style.display = "block";
+      document.getElementById("ortaSkor").style.display = "none";
+      document.getElementById("yuksekSkor").style.display = "none";
+      document.getElementById("dusukSkor").innerHTML = "Skor: " + skor + " (Düşük Risk)";
+    } else if (skor < 6) {
+      document.getElementById("dusukSkor").style.display = "none";
+      document.getElementById("ortaSkor").style.display = "block";
+      document.getElementById("yuksekSkor").style.display = "none";
+      document.getElementById("ortaSkor").innerHTML = "Skor: " + skor + " (Orta Risk)";
+    } else {
+      document.getElementById("dusukSkor").style.display = "none";
+      document.getElementById("ortaSkor").style.display = "none";
+      document.getElementById("yuksekSkor").style.display = "block";
+      document.getElementById("yuksekSkor").innerHTML = "Skor: " + skor + " (Yüksek Risk)";
+    }
+  }
+
+  function temizle() {
+    document.getElementById("yasSecenek").checked = false;
+    document.getElementById("kahSecenek").checked = false;
+    document.getElementById("anginaSecenek").checked = false;
+    document.getElementById("darlikSecenek").checked = false;
+    document.getElementById("asaSecenek").checked = false;
+    document.getElementById("stSecenek").checked = false;
+    document.getElementById("tropSecenek").checked = false;
+     document.getElementById("dusukSkor").style.display = "none";
+      document.getElementById("ortaSkor").style.display = "none";
+      document.getElementById("yuksekSkor").style.display = "none";
+}
+ </script>
+
+
+     
+    </script>
+  </body>
+</html>
